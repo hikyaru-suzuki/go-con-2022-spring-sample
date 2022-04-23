@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package server.master;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/entity/master";
+
+import "server/options/master/options.proto";
+
+// キャラクター詳細
+message CharacterDetail {
+  option (server.options.master.message) = {
+    accessor_type: AdminAndClient,
+  };
+
+  // キャラクターID
+  string character_id = 1 [(server.options.master.field) = {
+    ddl: {
+      pk: true,
+      fk: { table: "Character", column: "ID" },
+    },
+    validations: [{ key: "required" }]
+  }];
+
+  // 身長
+  string height = 2 [(server.options.master.field) = {
+    validations: [{ key: "required" }]
+  }];
+
+  // 体重
+  string weight = 3 [(server.options.master.field) = {
+    validations: [{ key: "required" }]
+  }];
+}

@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package server.master;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/entity/master";
+
+import "server/options/master/options.proto";
+
+// キャラクター
+message Character {
+  option (server.options.master.message) = {
+    accessor_type: All,
+    ddl: { indexes: { keys: ["name"] } }
+  };
+
+  // キャラクターID
+  string id = 1 [(server.options.master.field) = {
+    ddl: { pk: true },
+    validations: [{ key: "required" }]
+  }];
+
+  // 名前
+  string name = 2 [(server.options.master.field) = {
+    validations: [{ key: "required" }]
+  }];
+
+  // アセットバンドルID
+  string asset_bundle_id = 3 [(server.options.master.field) = {
+    accessor_type: AdminAndClient,
+    validations: [{ key: "required" }]
+  }];
+
+  // 表示順
+  int32 order = 4 [(server.options.master.field) = {
+    accessor_type: AdminAndClient,
+    validations: [{ key: "min", value: "0" }]
+  }];
+
+  // キャラクターストーリーのID一覧
+  repeated string story_ids = 5 [(server.options.master.field) = {
+    accessor_type: AdminAndClient,
+    ddl: { fk: { table:"story", column: "id" } },
+    validations: [{ key:"min", value:"0" }]
+  }];
+}

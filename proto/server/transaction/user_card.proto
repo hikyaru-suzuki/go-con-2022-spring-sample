@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package server.transaction;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/entity/transaction";
+
+import "server/options/transaction/options.proto";
+
+// ユーザーのカード
+message UserCard {
+  option (server.options.transaction.message) = {
+    accessor_type: ServerAndClient,
+    ddl: { interleave: { table: "User" } },
+  };
+
+  // ユーザーID
+  string user_id = 1 [(server.options.transaction.field) = {
+    accessor_type: OnlyServer,
+    ddl: { pk: true },
+  }];
+
+  // カードID
+  string card_id = 2 [(server.options.transaction.field) = {
+    ddl: {
+      pk: true,
+      master_ref: { table: "card", column: "id" }
+    },
+  }];
+
+  // レベル
+  int32 level = 3;
+}

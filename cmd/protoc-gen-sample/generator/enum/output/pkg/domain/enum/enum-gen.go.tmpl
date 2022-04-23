@@ -1,0 +1,14 @@
+{{ template "autogen_comment" }}
+package enum
+
+{{ if .Comment }} // {{ .Comment }}{{ end }}
+type {{ .PascalName }} int32
+
+{{ $Name := .PascalName -}}
+const (
+	{{- range .Elements }}
+	{{ if .Comment }} // {{ .Comment }}{{ end }}
+	{{ $Name }}_{{ .PascalName }} {{ $Name }} = {{ .Value }}
+	{{- end }}
+)
+

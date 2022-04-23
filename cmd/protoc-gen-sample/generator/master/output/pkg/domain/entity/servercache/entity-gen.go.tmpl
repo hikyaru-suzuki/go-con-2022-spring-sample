@@ -1,0 +1,22 @@
+{{ template "autogen_comment" }}
+package servercache
+
+import (
+    "time"
+
+    "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/enum"
+)
+
+// {{ .GoName }} {{ .Comment }}
+type {{ .GoName }} struct {
+{{- range .Columns }}
+    // {{ .Comment }}
+    {{ .GoName }} {{ .Type }}
+{{- end }}
+}
+
+type {{ .GoName }}Slice []*{{ .GoName }}
+
+{{- range .Messages }}
+    {{- template "message" . }}
+{{- end }}

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package server.options.transaction;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/proto/server/options/transaction";
+
+import "google/protobuf/descriptor.proto";
+
+message MessageOption {
+  enum AccessorType {
+    Unknown = 0;
+    OnlyServer = 1;
+    ServerAndClient = 2;
+  }
+  AccessorType accessor_type = 1;
+
+  message DDL {
+    message Index {
+      message Key {
+        string column = 1;
+        bool desc = 2;
+      }
+      repeated Key keys = 1;
+      bool unique = 2;
+      repeated string storing = 3;
+    }
+    repeated Index indexes = 1;
+
+    message Interleave {
+      string table = 1;
+    }
+    Interleave interleave = 2;
+  }
+  DDL ddl = 2;
+}
+
+message FieldOption {
+  enum AccessorType {
+    All = 0;
+    OnlyServer = 1;
+    OnlyClient = 2;
+  }
+  AccessorType accessor_type = 1;
+
+  message DDL {
+    bool pk = 1;
+
+    message MasterRef {
+      string table = 1;
+      string column = 2;
+    }
+    MasterRef master_ref = 3;
+  }
+  DDL ddl = 2;
+}
+
+extend google.protobuf.MessageOptions {
+  MessageOption message = 53001;
+}
+
+extend google.protobuf.FieldOptions {
+  FieldOption field = 53002;
+}

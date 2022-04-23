@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package server.options.master;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/proto/server/options/master";
+
+import "google/protobuf/descriptor.proto";
+
+message MessageOption {
+  enum AccessorType {
+    Unknown = 0;
+    All = 1;
+    OnlyAdmin = 2;
+    OnlyServer = 3;
+    AdminAndServer = 4;
+    AdminAndClient = 5;
+  }
+  AccessorType accessor_type = 1;
+
+  message DDL {
+    message Index {
+      repeated string keys = 1;
+    }
+    repeated Index indexes = 1;
+  }
+  DDL ddl = 2;
+}
+
+message FieldOption {
+  enum AccessorType {
+    All = 0;
+    OnlyAdmin = 1;
+    OnlyServer = 2;
+    OnlyClient = 3;
+    AdminAndServer = 4;
+    AdminAndClient = 5;
+    ServerAndClient = 6;
+  }
+  AccessorType accessor_type = 1;
+
+  message DDL {
+    bool pk = 1;
+
+    message FK {
+      string table = 1;
+      string column = 2;
+      repeated string parentColumns = 3;
+    }
+    FK fk = 2;
+
+    uint32 size = 3;
+
+    bool nullable = 4;
+  }
+  DDL ddl = 2;
+
+  message Validation {
+    string key = 1;
+    string value = 2;
+  }
+  repeated Validation validations = 3;
+}
+
+extend google.protobuf.MessageOptions {
+  MessageOption message = 52001;
+}
+
+extend google.protobuf.FieldOptions {
+  FieldOption field = 52002;
+}

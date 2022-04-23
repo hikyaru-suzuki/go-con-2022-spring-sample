@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package server.master;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/entity/master";
+
+import "server/enums/enums.proto";
+import "server/options/master/options.proto";
+
+// カード
+message Card {
+  option (server.options.master.message) = {
+    accessor_type: All,
+  };
+
+  // カードID
+  string id = 1 [(server.options.master.field) = {
+    ddl: { pk: true },
+    validations: [{ key: "required" }]
+  }];
+
+  // キャラクターID
+  string character_id = 2 [(server.options.master.field) = {
+    ddl: {
+      fk: { table: "Character", column: "ID" },
+    },
+    validations: [{ key: "required" }]
+  }];
+
+  // 名前
+  string name = 3 [(server.options.master.field) = {
+    validations: [{ key: "required" }]
+  }];
+
+  // レアリティ
+  enums.CardRarity rarity = 4;
+
+  // アセットバンドルID
+  string asset_bundle_id = 5 [(server.options.master.field) = {
+    accessor_type: AdminAndClient,
+    validations: [{ key: "required" }]
+  }];
+
+  // スキル
+  message Skill {
+    option (server.options.master.message) = {
+      accessor_type: All,
+    };
+
+    // スキルID
+    string skill_id = 1;
+
+    // スキル発動条件ID
+    string skill_condition_id = 2;
+  }
+  // 所持スキル一覧
+  repeated Skill skills = 6 [(server.options.master.field) = {
+    accessor_type: ServerAndClient,
+  }];
+
+  // 公開日
+  int64 publish_time = 7;
+
+  // 管理用メモ
+  string memo = 8 [(server.options.master.field) = {
+    accessor_type: OnlyAdmin,
+  }];
+
+  // クライアントが扱いやすいように整形した値
+  string value = 9 [(server.options.master.field) = {
+    accessor_type: OnlyClient,
+  }];
+
+  // スキルパワー調整用係数
+  int32 skill_coefficient = 10  [(server.options.master.field) = {
+    accessor_type: AdminAndServer,
+  }];
+}

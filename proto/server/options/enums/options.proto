@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package server.options.enums;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/proto/server/options/enum";
+
+import "google/protobuf/descriptor.proto";
+
+message EnumOption {
+  enum AccessorType {
+    Unknown = 0;
+    OnlyServer = 1;
+    ServerAndClient = 2;
+  }
+  AccessorType accessor_type = 1;
+}
+
+extend google.protobuf.EnumOptions {
+  EnumOption enum = 51001;
+}

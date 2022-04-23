@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package server.transaction;
+option go_package = "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/entity/transaction";
+
+import "server/options/transaction/options.proto";
+
+// ユーザー
+message User {
+  option (server.options.transaction.message) = {
+    accessor_type: ServerAndClient,
+    ddl: {
+      indexes: [{ keys: [{ column: "public_user_id" }], unique: true }]
+    },
+  };
+
+  // ユーザーID
+  string userId = 1 [(server.options.transaction.field) = {
+    accessor_type: OnlyServer,
+    ddl: { pk: true },
+  }];
+
+  // 公開ユーザーID
+  string public_user_id = 2;
+}

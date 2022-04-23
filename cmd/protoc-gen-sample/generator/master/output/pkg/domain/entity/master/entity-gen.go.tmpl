@@ -1,0 +1,18 @@
+{{ template "autogen_comment" }}
+package master
+
+import (
+    "github.com/hikyaru-suzuki/go-con-2022-spring-sample/pkg/domain/enum"
+)
+
+// {{ .Comment }}
+type {{ .GoName }} struct {
+{{- range .Columns }}
+    // {{ .Comment }}
+    {{ .GoName }} {{ .Type }} `json:"{{ .SnakeName }},omitempty"{{ if ne (len .ValidateOptions) 0 }} validate:"
+    {{- range $i, $o := .ValidateOptions }}
+        {{- if ne $i 0 }},{{ end -}}{{ $o.Key }}{{ if ne $o.Value "" }}={{ $o.Value }}{{ end }}
+    {{- end }}"
+    {{- end }}`
+{{- end }}
+}

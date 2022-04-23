@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  generator:
+    container_name: go-con-2022-spring-sample_protoc
+    image: go-con-2022-spring-sample_protoc
+    build:
+      context: ../
+      dockerfile: ./docker/generator/Dockerfile
+      args:
+        - GO_VERSION=${GO_VERSION}
+    working_dir: /usr/src/go-con-2022-spring-sample
+    volumes:
+      - ../:/usr/src/go-con-2022-spring-sample
+
+  protoc:
+    container_name: go-con-2022-spring-sample_generator
+    image: go-con-2022-spring-sample_generator
+    build:
+      context: ../
+      dockerfile: ./docker/protoc/Dockerfile
+      args:
+        - GO_VERSION=${GO_VERSION}
+    working_dir: /usr/src/go-con-2022-spring-sample
+    volumes:
+      - ../:/usr/src/go-con-2022-spring-sample

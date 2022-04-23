@@ -1,0 +1,10 @@
+{{ template "autogen_comment" }}
+package transaction
+
+// {{ .Comment }}
+type {{ .GoName }} struct {
+{{- range .Columns }}
+    // {{ .Comment }}
+    {{ .GoName }} {{ .Type }}
+{{- end }}
+}
